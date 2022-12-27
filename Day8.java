@@ -20,66 +20,76 @@ public class Day8{
         int treeGridRows = treeGrid.size();
         int treeGridCols = treeGrid.get(0).length();
 
-        int visible = (treeGridCols*2) + ((treeGridRows-2)*2);
+        //int visible = (treeGridCols*2) + ((treeGridRows-2)*2);
 
-        for(int row=1; row<treeGridRows-1; row++){//traverse r/c in interior trees
-            for(int col=1; col<treeGridCols-1; col++){
+        int maxScenicScore = 0;
+
+        for(int row=0; row<treeGridRows; row++){//traverse r/c in interior trees
+            for(int col=0; col<treeGridCols; col++){
+                int tempScenicScore = 0;
                 //for each tree
-                boolean isVisible = true;
+                //boolean isVisible = true;
                 int currentTreeHeight = Character.getNumericValue(treeGrid.get(row).charAt(col));
+                int scoreUp = 0;
+                int scoreDown = 0;
+                int scoreLeft = 0;
+                int scoreRight = 0;
 
                 //check up
                 for(int tempR=row; tempR>=1; tempR--){
                     int tempTreeHeight = Character.getNumericValue(treeGrid.get(tempR-1).charAt(col));
                     if(tempTreeHeight>=currentTreeHeight){
-                        isVisible=false;
+                        scoreUp++;
                         break;
                     }
+                    scoreUp++;
                 }
                 
-                if(isVisible==false){
-                    //check down
-                    isVisible = true;
-                    for(int tempR=row; tempR<treeGridRows-1; tempR++){
-                        int tempTreeHeight = Character.getNumericValue(treeGrid.get(tempR+1).charAt(col));
+
+                for(int tempR=row; tempR<treeGridRows-1; tempR++){
+                    int tempTreeHeight = Character.getNumericValue(treeGrid.get(tempR+1).charAt(col));
                         if(tempTreeHeight>=currentTreeHeight){
-                            isVisible=false;
+                            scoreDown++;
                             break;
                         }
-                    }
-                    if(isVisible==false){
+                        scoreDown++;
+                }
+
                         //check left
-                        isVisible = true;
-                        for(int tempC=col; tempC>=1; tempC--){
+
+                for(int tempC=col; tempC>=1; tempC--){
                             int tempTreeHeight = Character.getNumericValue(treeGrid.get(row).charAt(tempC-1));
                             if(tempTreeHeight>=currentTreeHeight){
-                                isVisible=false;
+                                scoreLeft++;
+                            
                                 break;
                             }
-                        }
-                        if(isVisible==false){
+                            scoreLeft++;
+                }
+
+                        
                             //check right
-                            isVisible = true;
-                            for(int tempC=col; tempC<treeGridCols-1; tempC++){
+                for(int tempC=col; tempC<treeGridCols-1; tempC++){
                                 int tempTreeHeight = Character.getNumericValue(treeGrid.get(row).charAt(tempC+1));
                                 if(tempTreeHeight>=currentTreeHeight){
-                                    isVisible=false;
+                                    scoreRight++;
+                                    
                                     break;
                                 }
-                            }
-                            if(isVisible==true){
-                                visible++;
-                            }
-                        }
-                        else visible++;
-                    }
-                    else visible++;
+                                scoreRight++;
                 }
-                else visible++;
+
+                tempScenicScore = scoreUp*scoreDown*scoreLeft*scoreRight;
+
+                if(tempScenicScore>maxScenicScore){
+                    maxScenicScore = tempScenicScore;
+                }
+
             }
         }
 
-        System.out.println(visible);
+        //System.out.println(visible);
+        System.out.println(maxScenicScore);
 
     }
 
